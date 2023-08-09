@@ -59,3 +59,26 @@ function checkForNavLink(entries){
 }
 
 document.querySelectorAll('section[id]').forEach(e => nav_observer.observe(e))
+
+function animateNumber(obj) {
+    start_timer = 0, end_timer = 2019, timer_duration = 1000
+    if(obj[0].isIntersecting){
+        let startTimestamp = null;
+        const step = timestamp => {
+            if (!startTimestamp) {
+                startTimestamp = timestamp;
+            }
+            const progress = Math.min((timestamp - startTimestamp) / timer_duration, 1);
+            obj[0].target.innerHTML = Math.floor(progress * (end_timer - start_timer) + start_timer);
+            console.log(start_timer)
+            if (progress < 1) {
+                window.requestAnimationFrame(step);
+            }
+        }
+        window.requestAnimationFrame(step);
+    }
+}
+const number = document.querySelector('footer span');
+
+const number_observer = new IntersectionObserver(animateNumber, { threshold: 0.7 })
+number_observer.observe(number)
